@@ -27,4 +27,8 @@ Route::post('/login', [AuthController::class, "login"]);
 // Registration
 Route::get('/register', [AuthController::class, 'showRegistrationForm'])->name('register');
 Route::post('/register', [AuthController::class, 'register']);
-
+Route::get("/admin",function(){
+    return view("adminDashboard");
+});
+// Route::get('/admin-dashboard', 'AdminController@index')->name('admin.dashboard');
+// Route::get('/user-dashboard', 'UserController@index')->name('user.dashboard');

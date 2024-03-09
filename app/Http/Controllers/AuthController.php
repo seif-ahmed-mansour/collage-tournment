@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
@@ -16,10 +17,17 @@ class AuthController extends Controller
     {
         // Validate request
         $credentials = $request->only('email', 'password');
-        if (auth()->attempt($credentials)) {
-            // Authentication passed...
+        // Check if the user is an admin
+        if (Auth::guard('admin')->attempt($credentials)) {
+            // Authentication passed for admin...
+            return redirect()->intended('/admin');
+        }
+        // Check if the user is a regular user
+        if (Auth::attempt($credentials)) {
+            // Authentication passed for regular user...
             return redirect()->intended('/');
         }
+        // If authentication fails, redirect back with error message
         return redirect()->back()->withInput()->withErrors(['email' => 'Invalid credentials']);
     }
     //end login
